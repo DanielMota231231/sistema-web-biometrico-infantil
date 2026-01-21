@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Dashboard</title>
+</head>
+<body style="font-family: Arial, sans-serif; padding: 20px;">
+  <h1>Dashboard</h1>
+  <p>Bienvenido: <b>{{ request.user.username }}</b></p>
+
+  <p>
+    <a href="{% url 'logout' %}">Cerrar sesión</a>
+  </p>
+</body>
+</html>
