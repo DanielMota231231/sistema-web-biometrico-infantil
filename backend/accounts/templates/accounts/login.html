@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="es">
 <head>
@@ -7,177 +8,169 @@
 
   <style>
     :root{
-      --bg1:#0f172a;      /* slate-900 */
-      --bg2:#111827;      /* gray-900 */
-      --card:#0b1220cc;   /* glass */
-      --border:#ffffff1f;
-      --text:#e5e7eb;     /* gray-200 */
-      --muted:#9ca3af;    /* gray-400 */
-      --accent:#22c55e;   /* green-500 */
-      --accent2:#60a5fa;  /* blue-400 */
-      --danger:#ef4444;   /* red-500 */
-      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --border: rgba(255,255,255,.22);
+      --field-bg: rgba(255,255,255,.10);
+      --field-bg2: rgba(255,255,255,.14);
+      --focus: rgba(255,255,255,.75);
+      --shadow: 0 30px 90px rgba(0,0,0,.45);
       --radius: 18px;
     }
 
     *{ box-sizing:border-box; }
+
     body{
       margin:0;
       min-height:100vh;
       font-family: Arial, sans-serif;
       color:var(--text);
-      background:
-        radial-gradient(1200px 600px at 10% 10%, rgba(96,165,250,.20), transparent 60%),
-        radial-gradient(900px 500px at 90% 30%, rgba(34,197,94,.18), transparent 55%),
-        linear-gradient(180deg, var(--bg1), var(--bg2));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-    }
 
-    .wrap{
-      width:100%;
-      max-width: 430px;
-      position:relative;
-    }
+      /* TU FONDO 4K (con panel dibujado) */
+      background: url("{% static 'img/login-bg.png' %}") center/cover no-repeat fixed;
 
-    /* “halo” */
-    .wrap:before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      border-radius: calc(var(--radius) + 2px);
-      background: linear-gradient(135deg, rgba(96,165,250,.55), rgba(34,197,94,.55));
-      filter: blur(18px);
-      opacity:.55;
-      z-index:-2;
-    }
-
-    .card{
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 26px 24px 22px;
-      backdrop-filter: blur(10px);
-    }
-
-    .brand{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      margin-bottom: 14px;
-    }
-
-    .logo{
-      width:44px;height:44px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, rgba(96,165,250,.9), rgba(34,197,94,.9));
       display:grid;
-      place-items:center;
-      box-shadow: 0 12px 30px rgba(0,0,0,.25);
-      flex:0 0 auto;
+      place-items:center; /* CENTRADO REAL */
+      padding: 28px;
     }
-    .logo svg{ width:22px; height:22px; fill:#0b1220; }
 
-    h1{
-      font-size: 20px;
-      margin:0;
-      letter-spacing:.2px;
+    /* Contenedor general centrado */
+    .wrap{
+      width: min(560px, 94vw);
+      position: relative;
+      transform: translateY(20px); /* tu ajuste */
     }
+
+    /*
+      “Slot” donde se monta el formulario encima del panel dibujado.
+      Se centra y se adapta a pantallas.
+    */
+    .form-slot{
+      width: min(440px, 92vw);
+      height: auto;
+      margin: 0 auto;                 /* CENTRADO */
+      padding: 26px 24px 22px;
+      border-radius: 22px;
+
+      /* NO pintamos un card sólido porque el panel ya está en la imagen,
+         pero sí damos un toque glass muy sutil para integrarlo */
+      background: rgba(255,255,255,.02);
+      border: 1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: var(--shadow);
+    }
+
+    /* Encabezado */
+    .title{
+      font-size: 22px;
+      margin: 0;
+      letter-spacing: .2px;
+      text-shadow: 0 6px 18px rgba(0,0,0,.35);
+    }
+
     .subtitle{
-      margin: 4px 0 0;
+      margin: 6px 0 16px;
       font-size: 13px;
       color: var(--muted);
-      line-height: 1.45;
+      text-shadow: 0 6px 18px rgba(0,0,0,.35);
     }
 
     .error{
-      margin: 14px 0 0;
-      background: rgba(239,68,68,.12);
-      border: 1px solid rgba(239,68,68,.35);
-      color: #fecaca;
+      margin: 10px 0 12px;
+      background: rgba(255, 90, 90, .18);
+      border: 1px solid rgba(255, 120, 120, .35);
+      color: rgba(255,235,235,.95);
       padding: 10px 12px;
       border-radius: 12px;
       font-size: 13px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
     }
 
-    .field{ margin-top: 14px; }
+    .field{ margin-top: 12px; }
+
     label{
       display:block;
-      font-weight:700;
+      font-weight: 800;
       font-size: 13px;
-      margin-bottom:8px;
-      color:#d1d5db;
+      margin-bottom: 6px;
+      color: rgba(255,255,255,.88);
+      text-shadow: 0 6px 18px rgba(0,0,0,.35);
     }
 
-    /* Estilo para inputs generados por Django form */
     input{
       width:100%;
       padding: 12px 12px;
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 12px;
-      background: rgba(17,24,39,.55);
-      color: var(--text);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--field-bg);
+      color: rgba(255,255,255,.92);
       outline: none;
-      transition: border-color .2s, box-shadow .2s, transform .02s;
+      transition: background .2s, border-color .2s, box-shadow .2s, transform .02s;
     }
-    input::placeholder{ color: rgba(156,163,175,.75); }
+
+    input::placeholder{ color: rgba(255,255,255,.55); }
 
     input:focus{
-      border-color: rgba(96,165,250,.75);
-      box-shadow: 0 0 0 4px rgba(96,165,250,.18);
+      border-color: rgba(255,255,255,.55);
+      background: var(--field-bg2);
+      box-shadow: 0 0 0 4px rgba(255,255,255,.14);
     }
 
     .actions{
-      margin-top: 18px;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
+      margin-top: 16px;
     }
 
+    /* Botón acorde a la imagen: claro, suave, sin degradado fuerte */
     button{
       width:100%;
       padding: 12px 14px;
-      border: 0;
-      border-radius: 12px;
-      background: linear-gradient(135deg, rgba(96,165,250,.95), rgba(34,197,94,.95));
-      color:#07101f;
-      font-weight:900;
-      letter-spacing:.3px;
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 14px;
+      background: rgba(255,255,255,.18);
+      color: rgba(255,255,255,.92);
+      font-weight: 900;
+      letter-spacing: .3px;
       cursor:pointer;
-      transition: transform .06s ease, filter .2s ease;
+      transition: transform .06s ease, filter .2s ease, background .2s;
+      text-shadow: 0 6px 18px rgba(0,0,0,.35);
     }
-    button:hover{ filter: brightness(1.05); }
-    button:active{ transform: translateY(1px); }
+
+    button:hover{
+      background: rgba(255,255,255,.24);
+    }
+
+    button:active{
+      transform: translateY(1px);
+    }
 
     .hint{
       margin-top: 10px;
-      font-size: 12px;
-      color: rgba(156,163,175,.9);
       text-align:center;
+      font-size: 12px;
+      color: rgba(255,255,255,.65);
+      text-shadow: 0 6px 18px rgba(0,0,0,.35);
     }
-    .hint a{ color: rgba(96,165,250,.95); text-decoration:none; }
-    .hint a:hover{ text-decoration:underline; }
+
+    /* Ajuste fino para que “caiga” mejor encima del panel dibujado:
+       Si lo quieres MÁS ARRIBA, cambia 10px por 0px o -10px */
+    .wrap{ margin-top: 10px; }
+
+    /* Responsive */
+    @media (max-width: 520px){
+      .form-slot{ padding: 20px 16px 18px; }
+      .title{ font-size: 20px; }
+    }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <div class="card">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">
-          <!-- icono simple -->
-          <svg viewBox="0 0 24 24">
-            <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-4.42 0-8 2-8 4.5A1.5 1.5 0 0 0 5.5 20h13A1.5 1.5 0 0 0 20 18.5C20 16 16.42 14 12 14Z"/>
-          </svg>
-        </div>
-        <div>
-          <h1>Acceso al sistema</h1>
-          <p class="subtitle">Inicia sesión con tus credenciales para continuar.</p>
-        </div>
-      </div>
+    <div class="form-slot">
+
+      <h1 class="title">Acceso al sistema</h1>
+      <div class="subtitle">Estancia Infantil UNACH</div>
 
       {% if form.errors %}
         <div class="error">Usuario o contraseña incorrectos. Verifica e inténtalo de nuevo.</div>
@@ -200,10 +193,9 @@
           <button type="submit">Iniciar sesión</button>
         </div>
 
-        <div class="hint">
-          ¿Problemas para entrar? Contacta al administrador.
-        </div>
+        <div class="hint">Contacta al administrador si no puedes ingresar.</div>
       </form>
+
     </div>
   </div>
 </body>
